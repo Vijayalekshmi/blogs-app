@@ -12,4 +12,8 @@ class PostViewTrack extends Model
     public function setCreatedAtAttribute($value) { 
         $this->attributes['viewed_at'] = \Carbon\Carbon::now(); 
     }
+    public function viewed_user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -45,9 +45,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserImage::class);
     }
-    public function posts()
+    public function owned_posts()
     {
         return $this->hasMany(Post::class);
+    }
+    public function viewed_posts()
+    {
+        return $this->hasMany(PostViewTrack::class);
     }
     public function comments()
     {
