@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PostViewTrack extends Model
 {
     use HasFactory;
-    
+    public $timestamps=false;
     public function setCreatedAtAttribute($value) { 
         $this->attributes['viewed_at'] = \Carbon\Carbon::now(); 
     }
