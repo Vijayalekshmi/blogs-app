@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    
 
     public function comments()
     {
@@ -20,5 +21,9 @@ class Post extends Model
     public function likes()
     {
         return $this->belongsToMany(User::class,'post_likes');
+    }
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
     }
 }
