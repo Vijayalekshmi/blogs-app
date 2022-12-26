@@ -14,7 +14,7 @@ class Post extends Model
     {
         return $this->hasMany(PostComment::class);
     }
-    public function owner()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
