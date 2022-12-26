@@ -19,14 +19,15 @@ class PostFactory extends Factory
     {
         $paragraphs = fake()->paragraphs(rand(2, 6));
         $title = fake()->realText(50);
-        $post = "<h1>".$title."</h1>";
+        $post = "";
         foreach ($paragraphs as $para) {
             $post .= "<p>".$para."</p>";
         }
         $user=User::inRandomOrder()->first();
         return [
             'user_id'=>$user->id,
-            'content' =>$post
+            'content' =>$post,
+            'title' =>$title
         ];
     }
 }
