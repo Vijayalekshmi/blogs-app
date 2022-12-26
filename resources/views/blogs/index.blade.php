@@ -1,5 +1,6 @@
-<div class="p-6 bg-white border-b border-gray-200">                    
-                    @foreach ($posts as $key => $post)                           
+<div class="p-6 bg-white border-b border-gray-200"> 
+                @if (count($posts) > 0)                   
+                    @foreach ($posts as $post)                                   
                     <div class="row">
                         <div class="col-md-8">
                             <article id="">
@@ -30,5 +31,7 @@
                     </div>
                   
                     @endforeach
-
+                @else
+                    <p>No posts found</p>
+                @endif
                 </div>
