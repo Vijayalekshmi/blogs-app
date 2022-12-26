@@ -19,11 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    $userId = Auth::id();
-    $posts=Post::with('user')->where('user_id', $userId)
-    ->get();
-    return view('dashboard',["posts"=>$posts]);
+Route::get('/dashboard', function () {   
+    $posts= Auth::user()->owned_posts;    
+    return view('dashboard')->with('posts', $posts);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
