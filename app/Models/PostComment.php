@@ -12,7 +12,7 @@ class PostComment extends Model
     {
         return $this->belongsTo(Post::class);
     }
-    public function commented_user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use  App\Models\Post;
-use  App\Models\User;
 use Illuminate\Support\Facades\Auth; 
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,5 +22,7 @@ Route::get('/dashboard', function () {
     $posts= Auth::user()->owned_posts;    
     return view('dashboard')->with('posts', $posts);
 })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('posts',[PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
+Route::get('posts/{post}',[PostController::class, 'show'])->middleware(['auth', 'verified'])->name('posts.show');
 
 require __DIR__.'/auth.php';
