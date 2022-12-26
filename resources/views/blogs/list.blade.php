@@ -14,7 +14,7 @@
                                     </div>
                                     <h2>
                                         <a href="">
-                                        Blog title</a></h2>
+                                        {{ $post->title }}</a></h2>
                                     </header>
                                     <div class="entry-content">
                                         <a href="">
