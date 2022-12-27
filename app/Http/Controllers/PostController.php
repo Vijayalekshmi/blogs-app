@@ -47,7 +47,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {  
-        return view('blogs.show')->with('post', $post);
+        $comments=$post->comments()->paginate(15);
+        return view('blogs.show')->with(['post'=> $post,'comments'=>$comments]);
     }
 
     /**

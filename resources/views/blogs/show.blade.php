@@ -27,10 +27,21 @@
                 <br><br>
             </div>
             </div>
+            <div class="row justify-content-center">
+               <div class="col-md-11 ">
+                    <h1 style="font-size: 20px;padding:10px" >
+                        <b> Comments </b>
+                    </h1>
+                </div>
+            </div>
+                <hr>
+                <br>
+            <div class="row pl-5">
+               <div class="col-md-8 ">
                   <span class="comments" style="padding-bottom:20px">
                      <div class="container" style='margin-bottom: 34px'>
-                        @if (count($post->comments) > 0)                   
-                        @foreach ($post->comments as $comment) 
+                        @if (count($comments) > 0)                   
+                        @foreach ($comments as $comment) 
                         <div class="card">
                            <div class="card-body">
                               <div class="row">
@@ -53,11 +64,14 @@
                            </div>
                         </div>
                         @endforeach
+                        {{ $comments->links() }}
                         @else
                         <p>No comments found</p>
                         @endif
                      </div>
                   </span>
+                </div>
+            </div>
                </div>
             </div>
          </div>
