@@ -25,8 +25,8 @@
                 </span>
                 <p>{!!$post->content !!} </p>
                 <br><br>
-</div>
-</div>
+            </div>
+            </div>
                   <span class="comments" style="padding-bottom:20px">
                      <div class="container" style='margin-bottom: 34px'>
                         @if (count($post->comments) > 0)                   

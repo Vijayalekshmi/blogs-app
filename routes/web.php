@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth; 
+use App\Models\Post; 
+
 use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {   
-    $posts= Auth::user()->owned_posts;    
+    $user = Auth::user();
+    $posts = $user->owned_posts()->paginate(8); 
+   
     return view('dashboard')->with('posts', $posts);
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('posts',[PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');

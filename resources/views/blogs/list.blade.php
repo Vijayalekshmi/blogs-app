@@ -13,7 +13,7 @@
             <span class="badge">{{ $post->comments->count() }}</span> Comments
             </span>
             <h5>
-               Post by {{ $post->user->name }} , {{  $post->created_at->format('d/m/Y') }}
+               Post by {{ $post->user->name }} , {{  $post->created_at->toFormattedDateString() }}
             </h5>
          </div>
          </span>
@@ -24,6 +24,7 @@
       </div>
    </div>
    @endforeach
+   {{ $posts->links() }}
    @else
    <p>No posts found</p>
    @endif
