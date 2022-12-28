@@ -8,21 +8,24 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="row justify-content-center">
-               <div class="col-md-11 ">
-              
+               <div class="col-md-11 ">               
                <h1 style="font-size: 20px;padding-top:20px" >
                     <b> {{ $post->title }} </b>
                 </h1>
                 <hr>
                 <br>
-                <div class="meta">
-                
+                <div class="meta">                
                     <h5>
                     Post by {{ $post->user->name }} , {{  $post->created_at->format('d/m/Y') }}
                     </h5>
                 </div>
                 </span>
                 </span>
+                @if($post->image)
+                <div>
+                <img src="{{ asset('images/' .$post->image->url) }}" >
+                </div>
+                @endif
                 <p>{!!$post->content !!} </p>
                 <br><br>
             </div>
