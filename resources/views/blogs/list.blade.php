@@ -19,7 +19,10 @@
          </span>
          </span>
          <p>{!!  \Illuminate\Support\Str::limit($post->content,150, $end='...') !!} </p>
-         <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn btn-primary">Read More <span class="glyphicon glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+         <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn btn-primary">View</a>
+         @if($post->user_id==auth()->id())
+            <a href="{{ route('posts.edit', ['post' => $post]) }}" class="btn btn-primary">Edit</a>
+         @endif
          <br><br>
       </div>
    </div>

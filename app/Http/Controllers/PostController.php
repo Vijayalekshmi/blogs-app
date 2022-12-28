@@ -7,6 +7,7 @@ use App\Models\Image;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
+use Storage;
 class PostController extends Controller
 {
     /**
@@ -64,6 +65,7 @@ class PostController extends Controller
             }
            
             // Redirect to the post show page
+            session()->flash('success', 'Post added successfully!');
             return redirect()->route('posts.show', ['post' => $post]);
     }
 
@@ -86,8 +88,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
-    {
-        //
+    {   
+        if (auth()->id() == $post->user_id) {
+             return view('blogs.edit')->with(['post'=> $post]);
+        }
+        return redirect()->route('posts.show', ['post' => $post]);
     }
 
     /**
@@ -99,7 +104,44 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        if (auth()->id() == $post->user_id) {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'title' => 'required',
+                'content' => 'required',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            // Update the post
+            $post->title = $request->title;
+            $post->content = $request->content;
+
+            // Handle the image upload if there is a new image
+            if ($request->hasFile('image')) {
+                // Delete the old image if it exists
+                if ($post->image) {
+                    Storage::delete($post->image);
+                    Image::where(['imageable_id'=>$post->id,'imageable_type' => Post::class])->delete();
+
+                }
+                // Upload the new image
+            
+                $imageName = time().'.'.$request->image->extension();
+                $request->image->move(public_path('images'), $imageName);
+                $image = new Image;
+                $image->imageable_id = $post->id; 
+                $image->imageable_type = Post::class; 
+                $image->url = $imageName;
+                $image->save();
+            }
+
+            // Save the post to the database
+            $post->save();
+            session()->flash('success', 'Post updated successfully!');
+            // Redirect to the appropriate page
+            return redirect()->route('posts.index');
+        }
+        return redirect()->route('posts.show', ['post' => $post]);
     }
 
     /**

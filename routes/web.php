@@ -29,6 +29,7 @@ Route::get('posts',[PostController::class, 'index'])->middleware(['auth', 'verif
 Route::get('posts/create',[PostController::class, 'create'])->middleware(['auth', 'verified'])->name('posts.create');
 Route::get('posts/{post}',[PostController::class, 'show'])->middleware(['auth', 'verified'])->name('posts.show');
 Route::post('posts',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('posts.store');
-
+Route::get('posts/{post}/edit',[PostController::class, 'edit'])->middleware(['auth', 'verified'])->name('posts.edit');
+Route::patch('posts/{post}/edit',[PostController::class, 'update'])->middleware(['auth', 'verified'])->name('posts.update');
 
 require __DIR__.'/auth.php';
