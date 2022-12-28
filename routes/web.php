@@ -16,14 +16,13 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function () {   
+    return redirect()->route('dashboard');
 });
 
 Route::get('/dashboard', function () {   
     $user = Auth::user();
-    $posts = $user->owned_posts()->paginate(8); 
-   
+    $posts = $user->owned_posts()->paginate(8);  
     return view('dashboard')->with('posts', $posts);
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('posts',[PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
