@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Image;
 
+use App\Models\PostViewTrack;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Storage;
@@ -16,7 +18,8 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {    
+    {   
+
         $posts= Post::orderBy('created_at', 'DESC')->paginate(8);
         return view('blogs.index')->with('posts', $posts);
     }
@@ -78,6 +81,7 @@ class PostController extends Controller
     public function show(Post $post)
     {  
         $comments=$post->comments()->paginate(15);
+       
         return view('blogs.show')->with(['post'=> $post,'comments'=>$comments]);
     }
 
@@ -153,5 +157,17 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function like(Post $post)
+    {
+        $user = auth()->user();
+        if ($user->likedPosts()->where('post_id', $post->id)->exists()) {
+            $user->likedPosts()->detach($post);
+            return response()->json(['liked' => false]);
+        } else {
+            $user->likedPosts()->attach($post);
+            return response()->json(['liked' => true]);
+        }
     }
 }

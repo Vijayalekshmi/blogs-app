@@ -49,7 +49,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
-    public function viewed_posts()
+    public function viewedPosts()
     {
         return $this->hasMany(PostViewTrack::class);
     }
@@ -57,7 +57,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(PostComment::class);
     }
-    public function liked_posts()
+    public function likedPosts()
     {
         return $this->belongsToMany(Post::class,'post_likes');
     }

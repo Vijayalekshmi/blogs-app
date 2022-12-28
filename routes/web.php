@@ -31,5 +31,5 @@ Route::get('posts/{post}',[PostController::class, 'show'])->middleware(['auth', 
 Route::post('posts',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('posts.store');
 Route::get('posts/{post}/edit',[PostController::class, 'edit'])->middleware(['auth', 'verified'])->name('posts.edit');
 Route::patch('posts/{post}/edit',[PostController::class, 'update'])->middleware(['auth', 'verified'])->name('posts.update');
-
+Route::post('/posts/{post}/like', [PostController::class, 'like'])->middleware(['auth', 'verified'])->name('posts.like');
 require __DIR__.'/auth.php';

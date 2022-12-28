@@ -6,18 +6,26 @@
    </x-slot>
    <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      @if (session()->has('success'))
+         @if (session()->has('success'))
             <div class="alert alert-success">
                 {{ session()->get('success') }}
             </div>
         @endif
          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="row justify-content-center">
-               <div class="col-md-11 ">               
-               <h1 style="font-size: 20px;padding-top:20px" >
-                    <b> {{ $post->title }} </b>
-                </h1>
-                <hr>
+               <div class="col-md-11 ">    
+               <a data-id='{{  $post->id }}' class="btn btn-primary" style='float:right;margin: 4px;' id='post_like'>
+               @if($post->likes()->where('user_id', auth()->id())->exists())
+                  Liked
+               @else
+                  Like
+               @endif
+               </a>           
+                  <h1 style="font-size: 20px;padding-top:20px" >
+                     <b> {{ $post->title }} </b>
+                     
+                  </h1>  
+                  <hr>
                 <br>
                 <div class="meta">                
                     <h5>
@@ -27,9 +35,9 @@
                 </span>
                 </span>
                 @if($post->image)
-                <div>
-                <img src="{{ asset('images/' .$post->image->url) }}" >
-                </div>
+                  <div>
+                     <img src="{{ asset('images/' .$post->image->url) }}" >
+                  </div>
                 @endif
                 <p>{!!$post->content !!} </p>
                 <br><br>
@@ -85,4 +93,23 @@
          </div>
       </div>
    </div>
+
+<script>
+   $(document).ready(function(){
+      $('#post_like').on('click',function(event){
+         event.preventDefault();
+         elem=$(this)
+         axios.post('/posts/{{ $post->id }}/like')
+         .then(function (response) {
+            if(response.data.liked){
+               elem.html('Liked')
+            } else{
+               elem.html('Like')
+            }   
+
+
+         })
+      })
+   })
+</script>
 </x-app-layout>
