@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Models\Image;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
 class PostController extends Controller
 {
     /**
@@ -25,7 +27,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        
+        return view('blogs.create');
     }
 
     /**
@@ -35,8 +38,33 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {       
+          
+          // Validate the request data
+            $validatedData = $request->validate([
+                'title' => 'required|max:255',
+                'content' => 'required',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+           
+            // Create a new post instance
+            $post = new Post;
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->user_id = Auth::id();          
+            $post->save();
+            if( $request->image){               
+                    $imageName = time().'.'.$request->image->extension();
+                    $request->image->move(public_path('images'), $imageName);
+                    $image = new Image;
+                    $image->imageable_id = $post->id; 
+                    $image->imageable_type = Post::class; 
+                    $image->url = $imageName;
+                    $image->save();
+            }
+           
+            // Redirect to the post show page
+            return redirect()->route('posts.show', ['post' => $post]);
     }
 
     /**

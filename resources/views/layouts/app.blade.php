@@ -13,6 +13,9 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        @if(request()->routeIs('posts.create'))
+            <script src="https://cdn.tiny.cloud/1/wzdxhi9if1y0z2tcitpmngen06ejo6iuyccjbla1j8b7z1sa/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+        @endif
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>

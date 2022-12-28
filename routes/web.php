@@ -22,10 +22,13 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {   
     $user = Auth::user();
-    $posts = $user->owned_posts()->paginate(8);  
+    $posts = $user->owned_posts()->orderBy('created_at', 'DESC')->paginate(8);  
     return view('dashboard')->with('posts', $posts);
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('posts',[PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
+Route::get('posts/create',[PostController::class, 'create'])->middleware(['auth', 'verified'])->name('posts.create');
 Route::get('posts/{post}',[PostController::class, 'show'])->middleware(['auth', 'verified'])->name('posts.show');
+Route::post('posts',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('posts.store');
+
 
 require __DIR__.'/auth.php';
