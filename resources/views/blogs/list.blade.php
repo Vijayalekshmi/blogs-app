@@ -13,7 +13,7 @@
             <span class="badge">{{ $post->comments->count() }}</span> Comments
             </span>
             <h5>
-               Post by {{ $post->user->name }} , {{  $post->created_at->toFormattedDateString() }}
+               Post by <a href="{{ route('users.show', ['user' => $post->user]) }}">{{ $post->user->name }} </a>, {{  $post->created_at->toFormattedDateString() }}
             </h5>
          </div>
          </span>

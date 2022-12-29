@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post; 
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,4 +34,7 @@ Route::post('posts',[PostController::class, 'store'])->middleware(['auth', 'veri
 Route::get('posts/{post}/edit',[PostController::class, 'edit'])->middleware(['auth', 'verified'])->name('posts.edit');
 Route::patch('posts/{post}/edit',[PostController::class, 'update'])->middleware(['auth', 'verified'])->name('posts.update');
 Route::post('/posts/{post}/like', [PostController::class, 'like'])->middleware(['auth', 'verified'])->name('posts.like');
+
+Route::get('users/{user}',[UserController::class, 'show'])->middleware(['auth', 'verified'])->name('users.show');
+
 require __DIR__.'/auth.php';
