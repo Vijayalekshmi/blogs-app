@@ -20,7 +20,7 @@
          </span>
          <p>{!!  \Illuminate\Support\Str::limit($post->content,150, $end='...') !!} </p>
          <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn btn-primary">View</a>
-         @if($post->user_id==auth()->id())
+         @if($post->hasEditPermission(auth()->user()))
             <a href="{{ route('posts.edit', ['post' => $post]) }}" class="btn btn-primary">Edit</a>
          @endif
          <br><br>

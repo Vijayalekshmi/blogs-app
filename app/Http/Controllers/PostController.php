@@ -81,7 +81,13 @@ class PostController extends Controller
     public function show(Post $post)
     {  
         $comments=$post->comments()->paginate(15);
-       
+        // if (!auth()->user()->viewedPosts()->where('post_id', $post->id)->exists()){
+        //     $postviewtracking = new PostViewTrack;
+        //     $postviewtracking->user_id = auth()->user()->id;
+        //     $postviewtracking->post_id =  $post->id;
+        //     $postviewtracking->viewed_at = now();
+        //     $postviewtracking->save();   
+        // }    
         return view('blogs.show')->with(['post'=> $post,'comments'=>$comments]);
     }
 
@@ -93,7 +99,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {   
-        if (auth()->id() == $post->user_id) {
+        if ($post->hasEditPermission(auth()->user())) {
              return view('blogs.edit')->with(['post'=> $post]);
         }
         return redirect()->route('posts.show', ['post' => $post]);
@@ -108,7 +114,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        if (auth()->id() == $post->user_id) {
+        if ($post->hasEditPermission(auth()->user())) {
             // Validate the request data
             $validatedData = $request->validate([
                 'title' => 'required',

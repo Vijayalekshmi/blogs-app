@@ -26,4 +26,8 @@ class Post extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+    public function hasEditPermission($user)
+    {
+        return $this->user_id==$user->id || $user->role=='admin';
+    }
 }
