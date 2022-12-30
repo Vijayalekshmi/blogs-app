@@ -6,7 +6,7 @@ use App\Models\Post;
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\CommentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,5 +36,9 @@ Route::patch('posts/{post}/edit',[PostController::class, 'update'])->middleware(
 Route::post('/posts/{post}/like', [PostController::class, 'like'])->middleware(['auth', 'verified'])->name('posts.like');
 
 Route::get('users/{user}',[UserController::class, 'show'])->middleware(['auth', 'verified'])->name('users.show');
+Route::post('comments',[CommentController::class, 'store'])->middleware(['auth', 'verified'])->name('comments.store');
+Route::post('/comments/{postComment}/edit',[CommentController::class, 'update'])->middleware(['auth', 'verified'])->name('comments.update');
+
+
 
 require __DIR__.'/auth.php';
