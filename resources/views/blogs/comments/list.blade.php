@@ -14,9 +14,11 @@
     
     <div class="clearfix"></div>
     <p>{{ $comment->comment }}</p>
+    @if($comment->hasEditPermission(auth()->user()))
     <a data-id='{{  $comment->id }}' class="btn btn-primary edit-button" style='float:right;margin: 4px;' class='comment_edit'>
         Edit
-    </a>  
+    </a> 
+    @endif 
     <div>
     </div>
     </div>

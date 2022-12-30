@@ -71,7 +71,15 @@
                                     @include('blogs.comments.list') 
                                  
                               @endforeach
-                           
+                              <!-- Edit form template -->
+                              <template id="edit-form-template">
+                              <form class="edit-form" >
+                                 <input type="hidden" name="id" value="">
+                                 <textarea name="comment" class='edit-comment'></textarea>                                
+                                 <button type="submit" class='btn btn-primary' style='background-color: #007bff;' >Save</button>
+                                 <button type="button" class='btn btn-primary cancel-edit' style='background-color: #007bff;' >Cancel</button>
+                              </form>
+                              </template>
                            {{ $comments->links() }}
                            @else
                               <p>No comments found</p>
@@ -108,7 +116,38 @@
             $('#comments').prepend(response.data)
          })
       });
-      
+      $('.edit-button').click(function () {
+         // Get the parent list item and the current comment text
+         const listItem = $(this).parent();
+         const currentComment = listItem.find('p').text();
+         // Get the edit form template and set the value of the "id" and "comment" fields
+         const formTemplate = $('#edit-form-template').html();
+         const form = $(formTemplate);
+         form.find('input[name="id"]').val($(this).data('id'));
+         form.find('textarea[name="comment"]').html(currentComment);
+
+         // Replace the comment with the form
+         listItem.find('p').replaceWith(form);
+         });
+   
+         $(document).on("submit", ".edit-form", function(event) {    
+        
+               // Prevent the default form submission behavior
+               event.preventDefault();         
+               // Get the form data
+               const data = $(this).serialize();
+               comment_id=$(this).children('[name="id"]').val()
+               axios.post('/comments/'+comment_id+'/edit',  data)
+               .then(function (response) {            
+                  const listItem = $(event.target).parent();
+                  listItem.find('form').replaceWith('<p>'+response.data.comment+'</p>');
+               })
+
+          });
+          $(document).on("click", ".cancel-edit", function(event) { 
+            comment=$(this).siblings('.edit-comment').val()
+            $(this).parent('.edit-form').replaceWith('<p>'+comment+'</p>')
+          });    
           
    })
 </script>

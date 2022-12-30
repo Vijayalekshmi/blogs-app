@@ -80,7 +80,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {  
-        $comments=$post->comments()->paginate(15);
+        $comments=$post->comments()->orderBy('created_at', 'DESC')->paginate(15);
         // if (!auth()->user()->viewedPosts()->where('post_id', $post->id)->exists()){
         //     $postviewtracking = new PostViewTrack;
         //     $postviewtracking->user_id = auth()->user()->id;

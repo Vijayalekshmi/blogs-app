@@ -17,4 +17,8 @@ class PostComment extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function hasEditPermission($user)
+    {
+        return $this->user_id==$user->id || $user->role=='admin';
+    }
 }

@@ -80,6 +80,16 @@ class CommentController extends Controller
      */
     public function update(Request $request, PostComment $postComment)
     {
+        if ($postComment->hasEditPermission(auth()->user())) {
+            $validatedData = $request->validate([
+                'comment' => 'required',            
+            ]);
+        
+            $postComment->update([
+                'comment' => $request->comment           
+            ]);
+            return response()->json(['comment' => $postComment->comment]); 
+        }
     }
 
     /**
