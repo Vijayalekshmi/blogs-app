@@ -54,13 +54,15 @@
                 <br>
             <div class="row pl-5">
                <div class="col-md-8 ">
-               <form method="POST" action="{{ route('comments.store') }}" class='comment_form' novalidate>
+               <form method="POST" action="{{ route('comments.store') }}" id='comment_form'>
                   @csrf
                   <div class="form-group">
-                        <label for="content">Add your comment</label>
-                        <input type="hidden" value="{{  $post->id }}" name="post_id"> 
-                        <textarea class="form-control"  name="comment" rows="3" required></textarea>
+                        <label for="comment">Add your comment</label>
+                        <textarea class="form-control" id="comment"  name="comment" rows="3" required></textarea>
+                        <label for="comment" class="error"></label>
                   </div>
+                  <input type="hidden" value="{{  $post->id }}" name="post_id"> 
+
                   <button type="submit" class="btn btn-primary" style='background-color: #007bff;' id="submit_button">Comment</button>
                </form>
                   <span  style="padding-bottom:20px;margin:10px">
@@ -75,7 +77,9 @@
                               <template id="edit-form-template">
                               <form class="edit-form" >
                                  <input type="hidden" name="id" value="">
-                                 <textarea name="comment" class='edit-comment'></textarea>                                
+                                 <input type="hidden" class='old-value' name="old-value" value="">
+                                 <textarea name="comment" class='edit-comment'></textarea>
+                                 <label class='error'></label>                                
                                  <button type="submit" class='btn btn-primary' style='background-color: #007bff;' >Save</button>
                                  <button type="button" class='btn btn-primary cancel-edit' style='background-color: #007bff;' >Cancel</button>
                               </form>
@@ -108,15 +112,32 @@
             } 
          })
       })
-      $('.comment_form').submit(function (event)  {
-         event.preventDefault();
-         const data = new FormData(this);
-         axios.post('/comments',  data)
-         .then(function (response) {            
-            $('#comments').prepend(response.data)
+      
+         
+      $('#comment_form').validate({
+         rules: {     
+            comment: {
+            required: true,
+            minlength: 10
+            }
+         },
+         messages: {      
+            comment: {
+            required: 'Please enter your comment',
+            minlength: 'Your comment must be at least 10 characters long'
+            }
+         },
+         submitHandler: function(form) {
+               const data = new FormData(form);
+               axios.post('/comments',  data)
+               .then(function (response) {            
+                  $('#comments').prepend(response.data)
+                  $('#comment').val('')
+                  form.validate().resetForm();
+               })
+            }
          })
-      });
-      $('.edit-button').click(function () {
+         $(document).on("click", ".edit-button", function(event) { 
          // Get the parent list item and the current comment text
          const listItem = $(this).parent();
          const currentComment = listItem.find('p').text();
@@ -124,28 +145,35 @@
          const formTemplate = $('#edit-form-template').html();
          const form = $(formTemplate);
          form.find('input[name="id"]').val($(this).data('id'));
+         form.find('input[name="old-value"]').val($(this).data('old-value'));
+
          form.find('textarea[name="comment"]').html(currentComment);
 
          // Replace the comment with the form
          listItem.find('p').replaceWith(form);
          });
-   
-         $(document).on("submit", ".edit-form", function(event) {    
+
+         $(document).on("submit", ".edit-form", function(event) {      
         
                // Prevent the default form submission behavior
                event.preventDefault();         
                // Get the form data
+               form= $(this)
                const data = $(this).serialize();
                comment_id=$(this).children('[name="id"]').val()
                axios.post('/comments/'+comment_id+'/edit',  data)
                .then(function (response) {            
                   const listItem = $(event.target).parent();
                   listItem.find('form').replaceWith('<p>'+response.data.comment+'</p>');
-               })
+               },function (error) {
+               // Do something with response error
+               error_msg=error.response.data.message
+               form.find('.error').html(error_msg)
+            })
 
           });
           $(document).on("click", ".cancel-edit", function(event) { 
-            comment=$(this).siblings('.edit-comment').val()
+            comment=$(this).siblings('.old-value').val()
             $(this).parent('.edit-form').replaceWith('<p>'+comment+'</p>')
           });    
           

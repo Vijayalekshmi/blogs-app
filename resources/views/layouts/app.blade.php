@@ -16,8 +16,16 @@
         @if(request()->routeIs('posts.create') || request()->routeIs('posts.edit') )
             <script src="https://cdn.tiny.cloud/1/wzdxhi9if1y0z2tcitpmngen06ejo6iuyccjbla1j8b7z1sa/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
         @endif
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            .error{
+                color:red;
+                display:block;
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
