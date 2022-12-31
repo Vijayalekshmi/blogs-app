@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PostComment;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifyEmail;
 class CommentController extends Controller
 {
     /**
@@ -44,6 +45,10 @@ class CommentController extends Controller
             'user_id' => auth()->id(),
             'comment' => $request->comment,
         ]);
+        $post=$comment->post;
+        $user= auth()->user();
+        $details=$user->name.' commented "'.$request->comment. '" on your post #'.$request->post_id;
+        Mail::to($comment->post->user->email)->send(new NotifyEmail($post,$user,"comment",$details));
         return view('blogs.comments.list')->with(['comment'=>$comment]);
         //return response()->json(['inserted' => true,'comment'=> $request->comment,'user_name'=> auth()->user()->name,'user_image'=> auth()->user()->image ? asset('images/' .auth()->user()->image->url ):''] );
     }

@@ -10,6 +10,10 @@ use App\Models\PostViewTrack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifyEmail;
+
+
 class PostController extends Controller
 {
     /**
@@ -173,6 +177,7 @@ class PostController extends Controller
             return response()->json(['liked' => false]);
         } else {
             $user->likedPosts()->attach($post);
+            Mail::to($post->user->email)->send(new NotifyEmail($post,$user,"like"));
             return response()->json(['liked' => true]);
         }
     }
