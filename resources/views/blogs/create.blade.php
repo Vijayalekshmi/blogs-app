@@ -27,7 +27,8 @@
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
-                         
+                            <span class="correction"></span>
+                            <button type="button" class="btn btn-primary" style='background-color: #007bff;float: right;' id="check_spell" >Check Spell</button>
                         </div>
                         <div class="form-group">
                             <label for="content">Content</label>
@@ -58,5 +59,19 @@
       tinycomments_mode: 'embedded'
       
     });
+    $('#check_spell').on('click',function(event){
+         event.preventDefault();
+         elem=$(this)
+         val=$('#title').val()
+         axios.post('/posts/check-spell/'+val)
+         .then(function (response) {
+            console.log(response.data)
+            if(response.data){
+               $('.correction').html('Correct word: '+response.data)
+            }else{
+               $('.correction').html('The sentence is correct')
+            }
+         })
+      })
   </script>
 </x-app-layout>

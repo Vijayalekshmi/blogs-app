@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyEmail;
-
+use App\SpellCheck;
 
 class PostController extends Controller
 {
@@ -180,5 +180,9 @@ class PostController extends Controller
             Mail::to($post->user->email)->send(new NotifyEmail($post,$user,"like"));
             return response()->json(['liked' => true]);
         }
+    }
+    public function checkSpell(string $word){
+        $t=app()->make(SpellCheck::class);
+        return $t->checkSpell($word);
     }
 }
