@@ -48,11 +48,7 @@ class User extends Authenticatable
     public function owned_posts()
     {
         return $this->hasMany(Post::class);
-    }
-    public function viewedPosts()
-    {
-        return $this->hasMany(PostViewTrack::class);
-    }
+    }    
     public function comments()
     {
         return $this->hasMany(PostComment::class);
