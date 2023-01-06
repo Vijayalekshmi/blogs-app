@@ -14,7 +14,7 @@
     
     <div class="clearfix"></div>
     <p>{{ $comment->comment }}</p>
-    @if($comment->hasEditPermission(auth()->user()))
+    @if($comment->hasEditPermission(auth()->user()) and !request()->routeIs('dashboard') and !request()->routeIs('users.show'))
     <a data-id='{{  $comment->id }}'  data-old-value='{{  $comment->comment }}' class="btn btn-primary edit-button" style='float:right;margin: 4px;' class='comment_edit'>
         Edit
     </a> 
